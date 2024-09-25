@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Loja de Plantas</title>
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+        <h1>Loja de Plantas Verde Vida</h1>
+        <p>"Nossa missão é cultivar a paixão por plantas, oferecendo produtos de alta qualidade e um atendimento excepcional. Acreditamos que cada planta pode transformar um espaço e melhorar a qualidade de vida."</p>
+        <p>Descubra a natureza em cada canto do seu lar!</p>
+    </header>
+    
+    <section class="products">
+        <h2>Nossos Produtos</h2>
+        <div class="product-list">
+            {% for product in products %}
+                <div class="product">
+                    <h3>{{ product[1] }}</h3>
+                    <img src="{{ url_for('static', filename=product[3].replace('static/', '')) }}" alt="{{ product[1] }}" style="width: 200px; height: 200px;">
+                    <p>Preço: R$ {{ product[2] }}</p>
+                    <form action="/add_to_cart" method="post">
+                        <input type="hidden" name="product_id" value="{{ product[0] }}">
+                        <label for="quantity">Quantidade:</label>
+                        <input type="number" name="quantity" min="1" value="1" required>
+                        <button type="submit">Adicionar ao Carrinho</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if added_message %}
+            <p style="color: green;">{{ added_message }}</p>
+        {% endif %}
+        
+        <a href="{{ url_for('cart') }}">
+            <button class="view-cart-button">Ver Carrinho</button>
+        </a>
+        
+    </section>
+
+    <section class="sponsors">
+        <h2>Nossos Patrocinadores</h2>
+        <div class="sponsor-list">
+            <div class="sponsor">
+                <img src="{{ url_for('static', filename='sponsor1.png') }}" alt="Patrocinador 1">
+                <p>Patrocinador 1</p>
+            </div>
+            <div class="sponsor">
+                <img src="{{ url_for('static', filename='sponsor2.png') }}" alt="Patrocinador 2">
+                <p>Patrocinador 2</p>
+            </div>
+            <div class="sponsor">
+                <img src="{{ url_for('static', filename='sponsor3.png') }}" alt="Patrocinador 3">
+                <p>Patrocinador 3</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Loja de Plantas Verde Vida - Todos os direitos reservados.</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.product-image');
+            images.forEach((image) => {
+                image.classList.add('visible'); // Adiciona a classe visible
+            });
+        });
+    </script>
+    
+</body>
+</html>
